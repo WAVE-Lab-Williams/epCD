@@ -1,0 +1,16 @@
+{
+  "name": "jspsych-wave-experiment-template",
+  "version": "1.0.0",
+  "description": "JSPsych experiment template with WAVE client integration",
+  "type": "module",
+  "scripts": {
+    "dev": "http-server -p 8080 -c-1",
+    "start": "npm run dev",
+    "lint": "eslint 'src/**/*.js'",
+    "lint:fix": "eslint 'src/**/*.js' --fix"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "eslint": "^8.56.0"
+  }
+}
