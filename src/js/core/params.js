@@ -4,10 +4,11 @@ Defining Parameter Variables
 ===============================================================
 */
 
-var stimFolder = 'src/assets/stimuli/circles/'
+var stimFolder = 'src/assets/stimuli/cups/'
+var generalFolder = 'src/assets/stimuli/'
 
-var runIntro = true;
-var runInstr = true;
+var runIntro = false;
+var runInstr = false;
 var runExpt = true;
 var runClose = true;
 var runPreload = true;
@@ -15,10 +16,11 @@ var runPreload = true;
 // Defining Core Variables that remain constant
 var PRESTIM_DISP_TIME = 800;
 var FIXATION_DISP_TIME = 500;
+var MASK_DISP_TIME = 100;
 
 // Variables for Participant Information
 var estTotalRunTime = 5;
-var estDollars = 0.9;
+var estDollars = 0.90;
 var participantType = 'prolific';
 var completionCode = 'C4MF2IV1';
 var prolific_url = 'https://app.prolific.co/submissions/complete?cc='+completionCode;
@@ -45,9 +47,9 @@ var h =
     document.body.clientHeight;
 
 // setting display image width
-var origWidth = 300;
-var origHeight = 300;
-var imgWidth = 150; // your desired display img width
+var origWidth = 1920;
+var origHeight = 1080;
+var imgWidth = 500; // your desired display img width
 var imgHeight = (imgWidth / origWidth) * origHeight;
 
 
