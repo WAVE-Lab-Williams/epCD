@@ -233,7 +233,7 @@ for (var i=0; i < poss_fullness.length; i++) {
     }
 }
 
-// forPreload.push(`${generalFolder}mask.png`)
+forPreload.push(`${generalFolder}mask.png`)
 
 
 

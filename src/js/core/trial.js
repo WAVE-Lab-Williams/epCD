@@ -96,17 +96,17 @@ function runSingleTrial(
         }
     };
 
-    // var mask = {
-    //     type: jsPsychHtmlKeyboardResponse,
-    //     stimulus: `${persistent_prompt}<div style="position: absolute; top: ${random_y_pos}px;">`+
-    //         `<img src="${generalFolder}mask.png" style="width:${imgWidth}px;" />` + 
-    //         `</div>`,
-    //     choices: "NO_KEYS",
-    //     trial_duration: MASK_DISP_TIME,
-    //     data: {
-    //         trial_category: 'fixation' + trialType,
-    //     }
-    // };
+    var mask = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `${persistent_prompt}<div style="position: absolute; top: ${random_y_pos}px;">`+
+            `<img src="${generalFolder}mask.png" style="width:${imgWidth}px;" />` + 
+            `</div>`,
+        choices: "NO_KEYS",
+        trial_duration: MASK_DISP_TIME,
+        data: {
+            trial_category: 'fixation' + trialType,
+        }
+    };
 
     var answer = {
         type: jsPsychHtmlKeyboardResponse,
@@ -146,9 +146,9 @@ function runSingleTrial(
     timelineTrialsToPush.push(prestim);
     timelineTrialsToPush.push(fixation);
     timelineTrialsToPush.push(dispImage(firstStim));
-    timelineTrialsToPush.push(prestim); // SWITCH IT BACK TO MASK ONCE YOU HAVE MASK
+    timelineTrialsToPush.push(mask); // SWITCH IT BACK TO MASK ONCE YOU HAVE MASK
     timelineTrialsToPush.push(dispImage(secondStim));
-    // timelineTrialsToPush.push(mask);
+    timelineTrialsToPush.push(mask);
     timelineTrialsToPush.push(answer);
     timelineTrialsToPush.push(cursor_on);
 
