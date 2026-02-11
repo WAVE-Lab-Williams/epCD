@@ -16,7 +16,7 @@ var runPreload = true;
 // Defining Core Variables that remain constant
 var PRESTIM_DISP_TIME = 800;
 var FIXATION_DISP_TIME = 500;
-var MASK_DISP_TIME = 100;
+var MASK_DISP_TIME = 300;
 
 // Variables for Participant Information
 var estTotalRunTime = 5;

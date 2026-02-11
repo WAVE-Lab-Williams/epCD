@@ -52,14 +52,21 @@ function runSingleTrial(
     var secondStim =  `${stimFolder}cup${cupFullness}_pos${secondCupPosition}_table${tableType}`
     var persistent_prompt = `<div style="position: fixed; top: 50px; left: 50%; transform: translateX(-50%); text-align: center;">f = same; j = different</div>`;
 
-    var random_y_pos = randomIntFromRange(0, h-imgHeight); // generate a random number that will fall within the screen region (taking into account the image size)
+    var random_y_pos = randomIntFromRange(50, h-imgHeight); // generate a random number that will fall within the screen region (taking into account the image size)
 
     function dispImage(useStim){
         var actualImage = {
             type: jsPsychHtmlKeyboardResponse,
-            stimulus:  `<div style="position: absolute; top: ${random_y_pos}px;">`+
-            `<img src="${useStim}.png" style="width:${imgWidth}px;" />` + 
-            `</div>`,
+            stimulus:  function(){
+                w =
+                    window.innerWidth ||
+                    document.documentElement.clientWidth ||
+                    document.body.clientWidth;
+                var x_pos = (w/2)-(imgWidth/2)
+                var display = `<div style="position: absolute; top: ${random_y_pos}px; left: ${x_pos}px;">`+
+                `<img src="${useStim}.png" style="width:${imgWidth}px;" />` + 
+                `</div>`;
+                return display},
             choices: "NO_KEYS",
             trial_duration: stimDuration,
             prompt: `${persistent_prompt}`,
@@ -98,9 +105,17 @@ function runSingleTrial(
 
     var mask = {
         type: jsPsychHtmlKeyboardResponse,
-        stimulus: `${persistent_prompt}<div style="position: absolute; top: ${random_y_pos}px;">`+
+        stimulus: function(){
+            w =
+                window.innerWidth ||
+                document.documentElement.clientWidth ||
+                document.body.clientWidth;
+            var x_pos = (w/2)-(imgWidth/2)
+            var display = `${persistent_prompt}<div style="position: absolute; top: ${random_y_pos}px; left: ${x_pos}px;">`+
             `<img src="${generalFolder}mask.png" style="width:${imgWidth}px;" />` + 
-            `</div>`,
+            `</div>`
+            return display
+        },
         choices: "NO_KEYS",
         trial_duration: MASK_DISP_TIME,
         data: {
@@ -119,6 +134,7 @@ function runSingleTrial(
             stimDuration: stimDuration,
             cupFullness: cupFullness,
             tableType: tableType,
+            y_position: random_y_pos,
             correct_response: function(){
                 if (firstStim == secondStim){
                     return "f"

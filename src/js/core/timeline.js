@@ -153,7 +153,7 @@ timelineintro.push({
     message: fullscreenMessage,
     on_finish: function () {
         full_check = true;
-    },
+        },
 });
 
 /*
