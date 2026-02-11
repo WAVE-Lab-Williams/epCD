@@ -253,19 +253,29 @@ async def create_experiment(
 
 
 def create_experiment_url(
-    base_url: str, experiment_id: str, participant_id: str, experimentee_api_key: Optional[str]
+    base_url: str, 
+    experiment_id: str,
+    experimentee_api_key: Optional[str], 
+    participant_id: Optional[str], 
 ) -> Tuple[str, str]:
     """Create full experiment URL with WAVE integration parameters."""
     if not experimentee_api_key:
         print("❌ EXPERIMENTEE_API_KEY not found in tools/.env file")
         sys.exit("Missing EXPERIMENTEE API key")
 
-    full_url: str = (
-        f"{base_url}"
-        f"?key={quote(experimentee_api_key)}"
-        f"&experiment_id={quote(experiment_id)}"
-        f"&participant_id={quote(participant_id)}"
-    )
+    if participant_id:
+        full_url: str = (
+            f"{base_url}"
+            f"?key={quote(experimentee_api_key)}"
+            f"&experiment_id={quote(experiment_id)}"
+            f"&participant_id={quote(participant_id)}"
+        )
+    else:
+        full_url: str = (
+            f"{base_url}"
+            f"?key={quote(experimentee_api_key)}"
+            f"&experiment_id={quote(experiment_id)}"
+        )
 
     censored_url: str = full_url.replace(experimentee_api_key, "[EXPERIMENTEE_API_KEY_HIDDEN]")
     return full_url, censored_url

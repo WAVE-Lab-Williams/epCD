@@ -101,7 +101,7 @@ var consent = {
     data: { trial_category: 'consent' },
 };
 
-// First check for PROLIFIC_PID, then participant_id, then generate random
+// First check for PROLIFIC_PID, then participant_id, then randomly generate id for now
 var workerID = getURLParameter('PROLIFIC_PID');
 if (workerID === 'no_query') {
     workerID = getURLParameter('participant_id');
@@ -110,7 +110,7 @@ if (workerID === 'no_query') {
 if (workerID !== 'no_query') {
     console.log('Worker singID captured from URL:', workerID);
 } else {
-    workerID = 'no_query_worker'+ Math.floor(Math.random() * 90000) + 10000;
+    workerID = 'no_query_worker'+ Math.floor(Math.random() * 90000 + 10000);
     console.warn('⚠️ No participant ID found in URL - randomly generated:', workerID);
 }
 
@@ -128,18 +128,18 @@ var id = {
                 );
             } else if (workerID.startsWith('no_query')) {
                 console.log(
-                    `The query was not successfully captured, or there was nothing to query, going with manual input. workerID now = ${respObj[key]}`,
+                    `The query was not successfully captured, or there was nothing to query, now going to add the manual input to the end of the no query. workerID now = ${workerID + respObj[key]}`,
                 );
-                workerID = respObj[key];
-            } else if (workerID.startsWith('manual_input')) {
-                console.log(`The query designates to go with the manual input. workerID now = ${respObj[key]}`)
-                workerID = respObj[key]
+                workerID = workerID + respObj[key];
             } else {
                 console.log(
-                    'The manual type differed from the query capture, going with query capture. Assuming the manual input was the wrong one, and that query was correct.',
+                    'The manual type differed from the query capture, and for some reason no_query was no generated, so going with manual input, whatever it is. If this happens, something has gone wrong.',
                 );
+                workerID = respObj[key];
             }
         } /*end of for loop*/
+        // Retroactively update all prior trials with the finalized workerID
+        jsPsych.data.get().addToAll({participant_id: workerID});
     } /*end of on_finish*/,
 }; /* end of id*/
 
@@ -276,7 +276,7 @@ var debrief_qs = {
     html: debriefForm(),
     button_label: ['Submit'],
     data: {
-        trial_category: 'debrief',
+        trial_category: 'debriefexpt',
         endTime: function () {
             var endTime = new Date().toLocaleString('en-US', {
                 timeZone: 'America/New_York',

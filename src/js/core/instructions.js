@@ -7,7 +7,7 @@ var welcometext = function() {
 
     // Check 1: Missing URL parameters
     const urlParams = new URLSearchParams(window.location.search);
-    const hasRequiredParams = urlParams.get('key') && urlParams.get('experiment_id') && urlParams.get('participant_id');
+    const hasRequiredParams = urlParams.get('key') && urlParams.get('experiment_id');
 
     if (!hasRequiredParams) {
         warningText = '<p style="color: #d63384; background: #f8d7da; padding: 8px 12px; border: 1px solid #f5c2c7; border-radius: 4px; margin: 10px 0; font-size: 14px;"><strong>⚠️ Data Logging Disabled:</strong> Your responses will not be saved. Please ensure your URL includes the required parameters: <code style="background: rgba(0,0,0,0.1); padding: 1px 3px; font-size: 12px;">https://yoursite.com/?key=YOUR_API_KEY&experiment_id=YOUR_EXPERIMENT_ID&participant_id=PARTICIPANT_ID</code></p>';
