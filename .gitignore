@@ -165,3 +165,6 @@ dmypy.json
 
 # UV specific
 uv.lock
+
+# unused images
+src/assets/unused/*

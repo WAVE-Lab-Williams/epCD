@@ -101,7 +101,7 @@ var consent = {
     data: { trial_category: 'consent' },
 };
 
-// First check for PROLIFIC_PID, then participant_id, then generate random
+// First check for PROLIFIC_PID, then participant_id, then randomly generate id for now
 var workerID = getURLParameter('PROLIFIC_PID');
 if (workerID === 'no_query') {
     workerID = getURLParameter('participant_id');
@@ -110,7 +110,7 @@ if (workerID === 'no_query') {
 if (workerID !== 'no_query') {
     console.log('Worker singID captured from URL:', workerID);
 } else {
-    workerID = 'no_query_worker'+ Math.floor(Math.random() * 90000) + 10000;
+    workerID = 'no_query_worker'+ Math.floor(Math.random() * 90000 + 10000);
     console.warn('⚠️ No participant ID found in URL - randomly generated:', workerID);
 }
 
@@ -128,18 +128,18 @@ var id = {
                 );
             } else if (workerID.startsWith('no_query')) {
                 console.log(
-                    `The query was not successfully captured, or there was nothing to query, going with manual input. workerID now = ${respObj[key]}`,
+                    `The query was not successfully captured, or there was nothing to query, now going to add the manual input to the end of the no query. workerID now = ${workerID + respObj[key]}`,
                 );
-                workerID = respObj[key];
-            } else if (workerID.startsWith('manual_input')) {
-                console.log(`The query designates to go with the manual input. workerID now = ${respObj[key]}`)
-                workerID = respObj[key]
+                workerID = workerID + respObj[key];
             } else {
                 console.log(
-                    'The manual type differed from the query capture, going with query capture. Assuming the manual input was the wrong one, and that query was correct.',
+                    'The manual type differed from the query capture, and for some reason no_query was no generated, so going with manual input, whatever it is. If this happens, something has gone wrong.',
                 );
+                workerID = respObj[key];
             }
         } /*end of for loop*/
+        // Retroactively update all prior trials with the finalized workerID
+        jsPsych.data.get().addToAll({participant_id: workerID});
     } /*end of on_finish*/,
 }; /* end of id*/
 
@@ -153,7 +153,7 @@ timelineintro.push({
     message: fullscreenMessage,
     on_finish: function () {
         full_check = true;
-    },
+        },
 });
 
 /*
@@ -164,56 +164,38 @@ INSTR PROCEDURE (*sec_instr)
 
 /* -------  Set Preload Images for Instr + Demo (*preload_instr) -------------- */
 
-forPreload.push(`${stimFolder}demo-circles.png`);
-// make sure to load any images you need for the demo itself. Usually you have different demo images than the main expt, such that you don't give away the content of the expt itself (but still give the participant practice and familiarity with the task. In this case, though, the demo images themselves are identical to the main expt. Variable names are the only difference.
-var demo_circle_colors = ["blue","orange"];
-var demo_display_durations = [200, 500];
-for (var i = 0; i < demo_circle_colors.length; i++) {
-    forPreload.push(`${stimFolder}${demo_circle_colors[i]}-circle.png`);
-}
+// forPreload.push(`${stimFolder}demo-circles.png`);
+// // make sure to load any images you need for the demo itself. Usually you have different demo images than the main expt, such that you don't give away the content of the expt itself (but still give the participant practice and familiarity with the task. In this case, though, the demo images themselves are identical to the main expt. Variable names are the only difference.
+// var demo_circle_colors = ["blue","orange"];
+// var demo_display_durations = [200, 500];
+// for (var i = 0; i < demo_circle_colors.length; i++) {
+//     forPreload.push(`${stimFolder}${demo_circle_colors[i]}-circle.png`);
+// }
 
-//decide what the parameters for the demo trial should be. Sometimes you hardcode this, sometimes you randomly choose from the options you defined above.
-var thisDemoCircle = randomChoice(demo_circle_colors,1)[0];
-var thisDemoDispDuration = randomChoice(demo_display_durations,1)[0];
+// //decide what the parameters for the demo trial should be. Sometimes you hardcode this, sometimes you randomly choose from the options you defined above.
+// var thisDemoCircle = randomChoice(demo_circle_colors,1)[0];
+// var thisDemoDispDuration = randomChoice(demo_display_durations,1)[0];
 
 /* -------  Push Instr + Demo Trials to timeline_instr (*push_instr) -------------- */
 var instrContent = loadInstrContent();
-var demoTrialIndex = 3;
-var [instrContent_beforedemo,instrContent_afterdemo] = cutArray(instrContent,3);
 
-var instructions1 = {
+var instructions = {
     type: jsPsychInstructions,
-    pages: instrContent_beforedemo,
+    pages: instrContent,
     show_clickable_nav: true,
     allow_keys: false,
     allow_backward: false,
     delay_time: function(){
         const calculated_delays = [];
         for (let i = 0; i < instrContent.length; i++) {
-            calculated_delays.push(calculate_delay_time(count_words(instrContent[i]),60));
+            calculated_delays.push(calculate_delay_time(count_words(instrContent[i]),50));
         }
         return calculated_delays
     }, // end delay_time
 };
 
-var instructions2 = {
-    type: jsPsychInstructions,
-    pages: instrContent_afterdemo,
-    show_clickable_nav: true,
-    allow_keys: false,
-    allow_backward: false,
-    delay_time: function(){
-        const calculated_delays = [];
-        for (let i = demoTrialIndex; i < instrContent.length; i++) {
-            calculated_delays.push(calculate_delay_time(count_words(instrContent[i]),60));
-        }
-        return calculated_delays
-    }, // end delay_time
-};
+timelineinstr.push(instructions);
 
-timelineinstr.push(instructions1);
-runSingleTrial(thisDemoCircle,thisDemoDispDuration,timelineinstr,"prac") // pushesyour demo trial
-timelineinstr.push(instructions2);
 
 /*
 ===============================================================
@@ -223,27 +205,47 @@ EXPERIMENT SECTION (*sec_expt)
 
 /* -------- defining factors && exptdesign (*factors) --------*/
 
-var poss_circle_colors = ["blue","orange"];
-var poss_disp_duration = [200, 500];
 
-var factors = {
-    circle_color: poss_circle_colors,
+var poss_fullness = ["Full","Half"]
+poss_fullness = randomChoice(poss_fullness,1);
+var poss_position = ["Center", "Right"];
+var poss_table = ["Flat", "Groove", "Platform"];
+var poss_disp_duration = [200, 300, 500];
+
+var factors = { // each of these needs to be an array
+    fullness: poss_fullness,
+    first_position: poss_position,
+    second_position: poss_position,
+    table_style: poss_table,
     disp_duration: poss_disp_duration
 }
 
-var full_design = jsPsych.randomization.factorial(factors, 1);
+var full_design = jsPsych.randomization.factorial(factors, 1); // create combination of every possible condition, and randomly shuffles
 console.log(full_design);
+console.log(full_design[0]);
 
 /* -------  Set Preload Images for Expt (*preload_expt) -------------- */
-for (var i = 0; i < poss_circle_colors.length; i++) {
-    forPreload.push(`${stimFolder}${poss_circle_colors[i]}-circle.png`);
+for (var i=0; i < poss_fullness.length; i++) {
+    for (var j=0; j < poss_position.length; j++){
+        for (var k=0; k < poss_table.length; k++) {
+            forPreload.push(`${stimFolder}cup${poss_fullness[i]}_pos${poss_position[j]}_table${poss_table[k]}.png`)
+        }
+    }
 }
+
+forPreload.push(`${generalFolder}mask.png`)
+
+
 
 /* ------- timeline expt push (*pushExpt ) -------------- */
 for (var elem = 0; elem < full_design.length; elem++) {
+// for (var elem = 0; elem < 1; elem++) { // for debugging and dev runs
     runSingleTrial(
-        full_design[elem].circle_color,
-        full_design[elem].disp_duration,
+        full_design[elem].fullness,
+        full_design[elem].first_position,
+        full_design[elem].second_position,
+        full_design[elem].table_style,
+        full_design[elem].disp_duration, 
         timelineexpt,
         'expt',
     );
@@ -275,7 +277,7 @@ var debrief_qs = {
     html: debriefForm(),
     button_label: ['Submit'],
     data: {
-        trial_category: 'debrief',
+        trial_category: 'debriefexpt',
         endTime: function () {
             var endTime = new Date().toLocaleString('en-US', {
                 timeZone: 'America/New_York',

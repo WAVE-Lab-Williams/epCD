@@ -58,10 +58,12 @@ function initializeWaveClient() {
     console.log('Experiment ID:', EXPERIMENT_ID || 'Missing');
     console.log('Participant ID:', PARTICIPANT_ID || 'Missing');
 
-    if (!WAVE_API_KEY || !EXPERIMENT_ID || !PARTICIPANT_ID) {
+    if (!WAVE_API_KEY || !EXPERIMENT_ID) { 
         console.warn('⚠️ WAVE parameters missing. Data will only be displayed locally.');
-        console.warn('Required URL format: https://yoursite.com/?key=YOUR_API_KEY&experiment_id=YOUR_EXPERIMENT_ID&participant_id=PARTICIPANT_ID');
-        console.warn('For Prolific: Use PROLIFIC_PID instead of participant_id (either parameter works)');
+        console.warn('Required URL format: https://yoursite.com/?key=YOUR_API_KEY&experiment_id=YOUR_EXPERIMENT_ID');
+        if (!PARTICIPANT_ID){
+            console.warn('No participant_id nor PROLIFIC_PID provided. Will default to manual input, but will still save data')
+        }
         return false;
     }
 
@@ -133,11 +135,17 @@ function processTrialData(data) {
             trial_type: data.trial_type,
             trial_category: data.trial_category,
             stimulus: data.stimulus,
-            response: data.response,
+            response: JSON.stringify(data.response),
             response_time: data.rt,
+            firstStim: data.firstStim,
+            secondStim: data.secondStim,
+            cupFullness: data.cupFullness,
+            tableType: data.tableType,
+            y_position: data.y_position,
+            dispImage_duration: data.dispImage_duration,
             accuracy: data.thisAcc,
             correct_response: data.correct_response,
-            stimulus_duration: data.trial_duration,
+            trial_duration: data.trial_duration,
             time_elapsed: data.time_elapsed,
             timestamp: data.timestamp,
             user_agent: data.user_agent
