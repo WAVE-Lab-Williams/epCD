@@ -239,6 +239,7 @@ forPreload.push(`${generalFolder}mask.png`)
 
 /* ------- timeline expt push (*pushExpt ) -------------- */
 for (var elem = 0; elem < full_design.length; elem++) {
+// for (var elem = 0; elem < 1; elem++) { // for debugging and dev runs
     runSingleTrial(
         full_design[elem].fullness,
         full_design[elem].first_position,

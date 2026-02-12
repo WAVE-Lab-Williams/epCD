@@ -119,7 +119,7 @@ function runSingleTrial(
         choices: "NO_KEYS",
         trial_duration: MASK_DISP_TIME,
         data: {
-            trial_category: 'fixation' + trialType,
+            trial_category: 'mask' + trialType,
         }
     };
 
@@ -131,7 +131,7 @@ function runSingleTrial(
             trial_category: "answer" + trialType,
             firstStim: firstStim,
             secondStim: secondStim,
-            stimDuration: stimDuration,
+            dispImage_duration: stimDuration, // this is to see what the dispImg duration was, otherwise trial_duration would just be null for this answer trial
             cupFullness: cupFullness,
             tableType: tableType,
             y_position: random_y_pos,

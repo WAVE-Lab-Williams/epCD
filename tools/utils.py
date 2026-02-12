@@ -256,7 +256,7 @@ def create_experiment_url(
     base_url: str, 
     experiment_id: str,
     experimentee_api_key: Optional[str], 
-    participant_id: Optional[str], 
+    participant_id: Optional[str] = None,
 ) -> Tuple[str, str]:
     """Create full experiment URL with WAVE integration parameters."""
     if not experimentee_api_key:
