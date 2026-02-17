@@ -22,7 +22,7 @@ var MASK_DISP_TIME = 300;
 var estTotalRunTime = 5;
 var estDollars = 0.90;
 var participantType = 'prolific';
-var completionCode = 'C4MF2IV1';
+var completionCode = 'CFR2PRXS';
 var prolific_url = 'https://app.prolific.co/submissions/complete?cc='+completionCode;
 
 // WAVE Backend Configuration
