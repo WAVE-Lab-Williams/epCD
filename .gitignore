@@ -168,3 +168,8 @@ uv.lock
 
 # unused images
 src/assets/unused/*
+
+# data folders
+tools/data/*
+temp/
+!.gitkeep

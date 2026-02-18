@@ -139,6 +139,8 @@ function processTrialData(data) {
             response_time: data.rt,
             firstStim: data.firstStim,
             secondStim: data.secondStim,
+            firstCupPosition: data.firstCupPosition,
+            secondCupPosition: data.secondCupPosition,
             cupFullness: data.cupFullness,
             tableType: data.tableType,
             y_position: data.y_position,

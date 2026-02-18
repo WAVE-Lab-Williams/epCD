@@ -131,6 +131,8 @@ function runSingleTrial(
             trial_category: "answer" + trialType,
             firstStim: firstStim,
             secondStim: secondStim,
+            firstCupPosition: firstCupPosition,
+            secondCupPosition: secondCupPosition,
             dispImage_duration: stimDuration, // this is to see what the dispImg duration was, otherwise trial_duration would just be null for this answer trial
             cupFullness: cupFullness,
             tableType: tableType,
