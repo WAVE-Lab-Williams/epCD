@@ -170,6 +170,7 @@ uv.lock
 src/assets/unused/*
 
 # data folders
+data/
 tools/data/*
 temp/
 !.gitkeep
