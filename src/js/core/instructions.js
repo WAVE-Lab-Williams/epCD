@@ -10,7 +10,7 @@ var welcometext = function() {
     const hasRequiredParams = urlParams.get('key') && urlParams.get('experiment_id');
 
     if (!hasRequiredParams) {
-        warningText = '<p style="color: #d63384; background: #f8d7da; padding: 8px 12px; border: 1px solid #f5c2c7; border-radius: 4px; margin: 10px 0; font-size: 14px;"><strong>⚠️ Data Logging Disabled:</strong> Your responses will not be saved. Please ensure your URL includes the required parameters: <code style="background: rgba(0,0,0,0.1); padding: 1px 3px; font-size: 12px;">https://yoursite.com/?key=YOUR_API_KEY&experiment_id=YOUR_EXPERIMENT_ID&participant_id=PARTICIPANT_ID</code></p>';
+        warningText = '<p style="color: #d63384; background: #f8d7da; padding: 8px 12px; border: 1px solid #f5c2c7; border-radius: 4px; margin: 10px 0; font-size: 14px;"><strong>⚠️ Data Logging Disabled:</strong> Your responses will not be saved. Please ensure your URL includes the required parameters: <code style="background: rgba(0,0,0,0.1); padding: 1px 3px; font-size: 12px;">https://yoursite.com/?key=YOUR_API_KEY&experiment_id=YOUR_EXPERIMENT_ID</code></p>';
     }
 
     // Add container for WAVE connection status warning (will be populated async)
@@ -31,24 +31,25 @@ function requestIDinput(participantType, workerID) {
         var insert = participantType + ' ID';
     }
 
-    if (workerID.startsWith('manual')){
-        console.log('Query-captured workerID requires manual input.')
-        var inputbox =
-            '<p>Please enter your initials (no spaces, no punctuation): ' +
-            ":</p><br><input required='true' autofocus='true' name='numberID' type='text' size='70' />";
-    } else if (workerID != 'no_query' && workerID != undefined) {
+    if (workerID.startsWith('no_query')){
+        console.log('There was no query captured for the participantID or PROLIFIC_PID')
         console.log(workerID);
         var inputbox =
-            '<p>Please enter your participant ID for this experiment: ' +
-            ":</p><br><input required='true' autofocus='true' name='numberID' type='text' size='70' value='" +
+            "<p>Please enter your initials (no spaces, no punctuation, all uppercase):</p>" +
+            "<input required='true' autofocus='true' name='numberID' type='text' size='70' />";
+    } else if (workerID != undefined) {
+        console.log(workerID);
+        var inputbox =
+            "<p>Please enter your participant ID for this experiment:</p>" +
+            "<input required='true' autofocus='true' name='numberID' type='text' size='70' value='" +
             workerID +
             "' />";
     } else {
-        console.log('workerID capture via Query has failed');
+        console.log('workerID was somehow undefined, and also no_query number was not generated, you should check how this happened.');
         var inputbox =
             '<p>Please provide your ' +
             insert +
-            ":</p><br><input required='true' autofocus='true' name='numberID' type='text' size='70' />";
+            ":</p><input required='true' autofocus='true' name='numberID' type='text' size='70' />";
     }
 
     var text =
@@ -66,7 +67,7 @@ var fullscreenMessage = `<p>This experiment needs to be run in “fullscreen” 
 function loadInstrContent() {
     var instrContent = [
         /* ind0 */ '<p>Hello! Thank you for participating in our study. Please take a moment to adjust your seating so that you can comfortably watch the monitor and use the keyboard. Feel free to dim the lights as well.</p><p>Close the door or do whatever is necessary to <b>minimize disturbance during the experiment</b>. Please also take a moment to silence your phone so that you are not interrupted by any messages mid-experiment. Do <i>not</i> switch to any other tabs or windows until you are complete.</p>',
-        /* ind1 */ `<p>In this quick experiment, you will see an image flash on screen briefly. Immediately after, another image will also flash briefly in the same location.<p>Your task today is straightforward: If the two images are <strong>different</strong> at all, <strong><i>press "f"</i></strong> on the keyboard as quickly as you can. But if the images are <strong>exactly the same</strong>, <strong><i>press "j"</i></strong> as quickly as you can.</p>`,
+        /* ind1 */ `<p>In this quick experiment, you will see an image flash on screen briefly. Immediately after, another image will also flash briefly in the same location.<p>Your task today is straightforward: If the two images are <strong>different</strong> at all, <strong><i>press "j"</i></strong> on the keyboard as quickly as you can. But if the images are <strong>exactly the same</strong>, <strong><i>press "f"</i></strong> as quickly as you can. (And don't worry about memorizing this, there will be a reminder on the screen throughout the experiment later.)</p>`,
         /* ind2 */ `<p>We'll make the experiment extra difficult for you. After each image flashes, it will be covered up briefly by the chaotic gray image below. Ignore this image, it is just meant to make the comparison difficult for you. Just focus on your task (of comparing the two main images)! <p><div style='text-align: center'><img src="${generalFolder}mask.png" height="${imgHeight}"/></div></p>`,
         /* ind3 */ `<p>These images will flash on screen for only a short amount of time, so pay close attention!</p><p>Sometimes, you may be unsure of your answer. This is okay, since the task is designed to be difficult!  In times like this, just give it your <b>best guess</b>, as we are interested in your <i>gut intuition</i>.</p><p>Please do your very best to remain as focused and attentive as possible, even at the end of the experiment. I know it is very difficult to stay focused, as the experiment may seem very long, especially when you are doing the same thing over and over. But remember, it will be all over in less than ${String(estTotalRunTime)} minutes. Press the button below to begin.`,
     ];

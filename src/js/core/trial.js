@@ -48,8 +48,8 @@ function runSingleTrial(
     };
 
     /*--------------------------- Experiment specific variables ---------------------------*/
-    var firstStim = `${stimFolder}cup${cupFullness}_pos${firstCupPosition}_table${tableType}`
-    var secondStim =  `${stimFolder}cup${cupFullness}_pos${secondCupPosition}_table${tableType}`
+    var firstStim = `${stimFolder}obj_cup${cupFullness}_pos${firstCupPosition}_table${tableType}`
+    var secondStim =  `${stimFolder}obj_cup${cupFullness}_pos${secondCupPosition}_table${tableType}`
     var persistent_prompt = `<div style="position: fixed; top: 50px; left: 50%; transform: translateX(-50%); text-align: center;">f = same; j = different</div>`;
 
     var random_y_pos = randomIntFromRange(50, h-imgHeight); // generate a random number that will fall within the screen region (taking into account the image size)
@@ -131,6 +131,8 @@ function runSingleTrial(
             trial_category: "answer" + trialType,
             firstStim: firstStim,
             secondStim: secondStim,
+            firstCupPosition: firstCupPosition,
+            secondCupPosition: secondCupPosition,
             dispImage_duration: stimDuration, // this is to see what the dispImg duration was, otherwise trial_duration would just be null for this answer trial
             cupFullness: cupFullness,
             tableType: tableType,
