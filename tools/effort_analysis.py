@@ -5,10 +5,10 @@ from scipy import stats
 
 # Global toggles    
 excludeOutlierParticipants = False # Exclude participants whose RT SD is > 2 SD from group mean SD
-excludeOutlierTrials = True # Exclude trials where RT > mean ± 2 SD (per participant)
+excludeOutlierTrials = False # Exclude trials where RT > mean ± 2 SD (per participant)
 filterCupFullness = None  # None = all; a string (e.g. "Full") or list (e.g. ["Full","Half"])
-filterTrialHalf = None   # None = all; "first" = first half of each participant's trials; "second" = second half
-filterTableType = None    # None = all; a string (e.g. "Groove") or list (e.g. ["Groove","Platform"])
+filterTrialHalf = None   # None = all; "single" = simulates single trial, the first different trial that appeared. "first" = first half of each participant's trials; "second" = second half
+filterTableType = None   # None = all; a string (e.g. "Groove") or list (e.g. ["Groove","Platform"])
 filterDisplayTime = None  # None = all; a number (e.g. 500) or list (e.g. [500, 1000])
 
 # 1. Load data
@@ -24,7 +24,27 @@ else:
     print(f"[filterCupFullness] None — all cup fullness levels included")
 
 # 3. Filter by trial half
-if filterTrialHalf is not None:
+if filterTrialHalf == "single":
+    n_before = len(df)
+    different_img = df[df["firstCupPosition"] != df["secondCupPosition"]]
+    first_different = (
+        different_img.sort_values("trial_number")
+        .groupby("participant_id", as_index=False)
+        .first()
+    )
+    df = df[df.index.isin(first_different.index)]
+    print(f"[filterTrialHalf] 'single' — first trial where images differ per participant — {len(df)} of {n_before} trials retained")
+elif filterTrialHalf == "single_alltypes":
+    n_before = len(df)
+    different_img = df[df["firstCupPosition"] != df["secondCupPosition"]]
+    first_per_type = (
+        different_img.sort_values("trial_number")
+        .groupby(["participant_id", "cupFullness", "firstCupPosition", "secondCupPosition", "tableType"], as_index=False)
+        .first()
+    )
+    df = df[df.index.isin(first_per_type.index)]
+    print(f"[filterTrialHalf] 'single_alltypes' — first trial per participant × cupFullness × position order × tableType — {len(df)} of {n_before} trials retained")
+elif filterTrialHalf is not None:
     median_trial = df.groupby("participant_id")["trial_number"].transform("median")
     if filterTrialHalf == "first":
         mask = df["trial_number"] <= median_trial
@@ -139,7 +159,14 @@ filter_subtitle = (
 )
 
 # 7. Save enriched CSV
-out_path = "data/dataframe_answer_effortcomputed.csv"
+if excludeOutlierParticipants and excludeOutlierTrials:
+    out_path = "data/dataframe_answer_effortcomputed_outlierParticipants_outlierTrials.csv"
+elif excludeOutlierParticipants:
+    out_path = "data/dataframe_answer_effortcomputed_outlierParticipantsONLY.csv"
+elif excludeOutlierTrials:
+    out_path = "data/dataframe_answer_effortcomputed_outlierTrialsONLY.csv"
+else:
+    out_path = "data/dataframe_answer_effortcomputed.csv"
 df.to_csv(out_path, index=False)
 print(f"Saved enriched data to {out_path}")
 print("\nEffort type counts (trials):")
