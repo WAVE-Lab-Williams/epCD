@@ -206,7 +206,7 @@ EXPERIMENT SECTION (*sec_expt)
 /* -------- defining factors && exptdesign (*factors) --------*/
 
 
-var poss_fullness = ["Full","Half"]
+var poss_fullness = ["Full"] //has "Full", "Half", or both
 poss_fullness = randomChoice(poss_fullness,1);
 var poss_position = ["Center", "Right"];
 var poss_table = ["Flat", "Groove", "Platform"];
@@ -228,7 +228,7 @@ console.log(full_design[0]);
 for (var i=0; i < poss_fullness.length; i++) {
     for (var j=0; j < poss_position.length; j++){
         for (var k=0; k < poss_table.length; k++) {
-            forPreload.push(`${stimFolder}obj_cup${poss_fullness[i]}_pos${poss_position[j]}_table${poss_table[k]}.png`)
+            forPreload.push(`${stimFolder}big_cup${poss_fullness[i]}_pos${poss_position[j]}_table${poss_table[k]}.png`)
         }
     }
 }
