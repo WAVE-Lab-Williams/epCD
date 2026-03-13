@@ -246,6 +246,7 @@ for (var elem = 0; elem < full_design.length; elem++) {
         full_design[elem].second_position,
         full_design[elem].table_style,
         full_design[elem].disp_duration, 
+        elem,
         timelineexpt,
         'expt',
     );

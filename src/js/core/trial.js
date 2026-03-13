@@ -9,6 +9,7 @@ function runSingleTrial(
     secondCupPosition,
     tableType,
     stimDuration,
+    trueTrialCounter,
     timelineTrialsToPush,
     trialType,
 ) {
@@ -137,6 +138,7 @@ function runSingleTrial(
             cupFullness: cupFullness,
             tableType: tableType,
             y_position: random_y_pos,
+            trueTrialCounter, trueTrialCounter,
             correct_response: function(){
                 if (firstStim == secondStim){
                     return "f"

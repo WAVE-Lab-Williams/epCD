@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 # Global toggles    
-excludeOutlierParticipants = False # Exclude participants whose RT SD is > 2 SD from group mean SD
-excludeOutlierTrials = False # Exclude trials where RT > mean ± 2 SD (per participant)
+excludeOutlierParticipants = True # Exclude participants whose RT SD is > 2 SD from group mean SD
+excludeOutlierTrials = True # Exclude trials where RT > mean ± 2 SD (per participant)
 filterCupFullness = None  # None = all; a string (e.g. "Full") or list (e.g. ["Full","Half"])
 filterTrialHalf = None   # None = all; "single" = simulates single trial, the first different trial that appeared. "first" = first half of each participant's trials; "second" = second half
 filterTableType = None   # None = all; a string (e.g. "Groove") or list (e.g. ["Groove","Platform"])
