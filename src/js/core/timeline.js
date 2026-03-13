@@ -228,7 +228,7 @@ console.log(full_design[0]);
 for (var i=0; i < poss_fullness.length; i++) {
     for (var j=0; j < poss_position.length; j++){
         for (var k=0; k < poss_table.length; k++) {
-            forPreload.push(`${stimFolder}big_cup${poss_fullness[i]}_pos${poss_position[j]}_table${poss_table[k]}.png`)
+            forPreload.push(`${stimFolder}expand_cup${poss_fullness[i]}_pos${poss_position[j]}_table${poss_table[k]}.png`)
         }
     }
 }
@@ -246,6 +246,7 @@ for (var elem = 0; elem < full_design.length; elem++) {
         full_design[elem].second_position,
         full_design[elem].table_style,
         full_design[elem].disp_duration, 
+        elem,
         timelineexpt,
         'expt',
     );

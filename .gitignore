@@ -174,3 +174,7 @@ data/
 tools/data/*
 temp/
 !.gitkeep
+
+# other specific files
+tools/effort_analysis.py
+tools/run_all_toggles.py
