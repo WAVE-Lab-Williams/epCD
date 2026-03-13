@@ -147,6 +147,7 @@ function processTrialData(data) {
             dispImage_duration: data.dispImage_duration,
             accuracy: data.thisAcc,
             correct_response: data.correct_response,
+            trueTrialCounter: data.trueTrialCounter,
             trial_duration: data.trial_duration,
             time_elapsed: data.time_elapsed,
             timestamp: data.timestamp,

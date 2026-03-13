@@ -48,7 +48,7 @@ var h =
 
 // setting display image width
 var origWidth = 1920;
-var origHeight = 1080;
+var origHeight = 1250;
 var imgWidth = 500; // your desired display img width
 var imgHeight = (imgWidth / origWidth) * origHeight;
 
