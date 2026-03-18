@@ -206,11 +206,11 @@ EXPERIMENT SECTION (*sec_expt)
 /* -------- defining factors && exptdesign (*factors) --------*/
 
 
-var poss_fullness = ["Full"] //has "Full", "Half", or both
+var poss_fullness = ["Full", "ExtraFull"] //has "Full", "Half", or both
 poss_fullness = randomChoice(poss_fullness,1);
 var poss_position = ["Center", "Right"];
 var poss_table = ["Flat", "Groove", "Platform"];
-var poss_disp_duration = [200, 300, 500];
+var poss_disp_duration = [200, 300];
 
 var factors = { // each of these needs to be an array
     fullness: poss_fullness,
@@ -220,7 +220,7 @@ var factors = { // each of these needs to be an array
     disp_duration: poss_disp_duration
 }
 
-var full_design = jsPsych.randomization.factorial(factors, 1); // create combination of every possible condition, and randomly shuffles
+var full_design = jsPsych.randomization.factorial(factors, 2); // create combination of every possible condition, and randomly shuffles
 console.log(full_design);
 console.log(full_design[0]);
 
