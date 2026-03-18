@@ -206,7 +206,7 @@ EXPERIMENT SECTION (*sec_expt)
 /* -------- defining factors && exptdesign (*factors) --------*/
 
 
-var poss_fullness = ["Full, ExtraFull"] //has "Full", "Half", or both
+var poss_fullness = ["Full", "ExtraFull"] //has "Full", "Half", or both
 poss_fullness = randomChoice(poss_fullness,1);
 var poss_position = ["Center", "Right"];
 var poss_table = ["Flat", "Groove", "Platform"];
