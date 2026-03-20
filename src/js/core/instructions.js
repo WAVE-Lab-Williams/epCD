@@ -53,7 +53,7 @@ function requestIDinput(participantType, workerID) {
     }
 
     var text =
-        "<div style='display: inline-block; margin: 0 auto; padding: 10px 200px 10px 200px; text-align: left'>";
+        "<div style='display: block; margin: 0 auto; padding: 10px 200px 10px 200px; text-align: left'>";
     text += inputbox;
     text +=
         '<p>(Note: Depending on the way you accessed this link, you may find that your ID is already entered into the box for your convenience, but please double-check if this number is correct before proceeding.)</p>';
