@@ -206,17 +206,17 @@ EXPERIMENT SECTION (*sec_expt)
 /* -------- defining factors && exptdesign (*factors) --------*/
 
 
-var poss_fullness = ["Full", "ExtraFull"] //has "Full", "Half", or both
+var poss_fullness = ["Half"] //has "Full", "Half", "ExtraFull" or both
 poss_fullness = randomChoice(poss_fullness,1);
-var poss_position = ["Center", "Right"];
-var poss_table = ["Flat", "Groove", "Platform"];
-var poss_disp_duration = [200, 300];
+var poss_position_combos = ["CU","CD","UC","DC","CC","CC","UU","DD"]
+var poss_position = ["C", "U", "D"];
+var poss_hand = ["None", "Up", "Side"];
+var poss_disp_duration = [300];
 
 var factors = { // each of these needs to be an array
     fullness: poss_fullness,
-    first_position: poss_position,
-    second_position: poss_position,
-    table_style: poss_table,
+    position_combo: poss_position_combos,
+    hand_style: poss_hand,
     disp_duration: poss_disp_duration
 }
 
@@ -227,24 +227,28 @@ console.log(full_design[0]);
 /* -------  Set Preload Images for Expt (*preload_expt) -------------- */
 for (var i=0; i < poss_fullness.length; i++) {
     for (var j=0; j < poss_position.length; j++){
-        for (var k=0; k < poss_table.length; k++) {
-            forPreload.push(`${stimFolder}expand_cup${poss_fullness[i]}_pos${poss_position[j]}_table${poss_table[k]}.png`)
+        for (var k=0; k < poss_hand.length; k++) {
+            forPreload.push(`${stimFolder}cup${poss_fullness[i]}_pos${poss_position[j]}_hand${poss_hand[k]}.png`)
         }
     }
 }
 
 forPreload.push(`${generalFolder}mask.png`)
 
-
+var thisFirstPosition;
+var thisSecondPosition;
 
 /* ------- timeline expt push (*pushExpt ) -------------- */
 for (var elem = 0; elem < full_design.length; elem++) {
 // for (var elem = 0; elem < 1; elem++) { // for debugging and dev runs
+    thisFirstPosition = full_design[elem].position_combo[0]
+    thisSecondPosition = full_design[elem].position_combo[1]
+
     runSingleTrial(
         full_design[elem].fullness,
-        full_design[elem].first_position,
-        full_design[elem].second_position,
-        full_design[elem].table_style,
+        thisFirstPosition,
+        thisSecondPosition,
+        full_design[elem].hand_style,
         full_design[elem].disp_duration, 
         elem,
         timelineexpt,
