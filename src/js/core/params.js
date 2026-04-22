@@ -4,11 +4,11 @@ Defining Parameter Variables
 ===============================================================
 */
 
-var stimFolder = 'src/assets/stimuli/cups/'
+var stimFolder = 'src/assets/stimuli/cabinets/'
 var generalFolder = 'src/assets/stimuli/other/'
 
-var runIntro = true;
-var runInstr = true;
+var runIntro = false;
+var runInstr = false;
 var runExpt = true;
 var runClose = true;
 var runPreload = true;
@@ -48,8 +48,8 @@ var h =
 
 // setting display image width
 var origWidth = 1920;
-var origHeight = 1250;
-var imgWidth = 500; // your desired display img width
+var origHeight = 1080;
+var imgWidth = 800; // your desired display img width
 var imgHeight = (imgWidth / origWidth) * origHeight;
 
 

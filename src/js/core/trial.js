@@ -7,7 +7,7 @@ function runSingleTrial(
     cupFullness,
     firstCupPosition,
     secondCupPosition,
-    tableType,
+    handType,
     stimDuration,
     trueTrialCounter,
     timelineTrialsToPush,
@@ -49,8 +49,8 @@ function runSingleTrial(
     };
 
     /*--------------------------- Experiment specific variables ---------------------------*/
-    var firstStim = `${stimFolder}expand_cup${cupFullness}_pos${firstCupPosition}_table${tableType}`
-    var secondStim =  `${stimFolder}expand_cup${cupFullness}_pos${secondCupPosition}_table${tableType}`
+    var firstStim = `${stimFolder}cup${cupFullness}_pos${firstCupPosition}_hand${handType}`
+    var secondStim =  `${stimFolder}cup${cupFullness}_pos${secondCupPosition}_hand${handType}`
     var persistent_prompt = `<div style="position: fixed; top: 25px; left: 50%; transform: translateX(-50%); text-align: center;">f = same; j = different</div>`;
 
     var random_y_pos = randomIntFromRange(50, h-imgHeight); // generate a random number that will fall within the screen region (taking into account the image size)
@@ -65,7 +65,7 @@ function runSingleTrial(
                     document.body.clientWidth;
                 var x_pos = (w/2)-(imgWidth/2)
                 var display = `<div style="position: absolute; top: ${random_y_pos}px; left: ${x_pos}px;">`+
-                `<img src="${useStim}.png" style="width:${imgWidth}px;" />` + 
+                `<img src="${useStim}.png" style="width:${imgWidth}px; height:${imgHeight}px" />` + 
                 `</div>`;
                 return display},
             choices: "NO_KEYS",
@@ -96,7 +96,8 @@ function runSingleTrial(
 
     var fixation = {
         type: jsPsychHtmlKeyboardResponse,
-        stimulus: `${persistent_prompt}<div style="font-size:60px;">+</div>`,
+        stimulus: `<div style="font-size:60px;">+</div>`,
+        prompt:`${persistent_prompt}`,
         choices: "NO_KEYS",
         trial_duration: FIXATION_DISP_TIME,
         data: {
@@ -136,7 +137,7 @@ function runSingleTrial(
             secondCupPosition: secondCupPosition,
             dispImage_duration: stimDuration, // this is to see what the dispImg duration was, otherwise trial_duration would just be null for this answer trial
             cupFullness: cupFullness,
-            tableType: tableType,
+            handType: handType,
             y_position: random_y_pos,
             trueTrialCounter: trueTrialCounter,
             correct_response: function(){
