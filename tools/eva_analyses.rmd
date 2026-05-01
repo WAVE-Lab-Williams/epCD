@@ -1,0 +1,130 @@
+---
+title: "basic_analysis"
+output: html_document
+date: "2026-04-22"
+editor_options: 
+  chunk_output_type: console
+---
+
+This is my setup code!
+```{r}
+# Libraries required for doc
+library(knitr)
+library(psych)
+library(stats)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+
+setwd('/Users/evaliss/Desktop/WAVElab_code/epCD/data/pilot 1')
+```
+
+Import my data and add necessary columns
+```{r}
+df <- read.csv("dataframe_answer.csv", header = TRUE)
+
+## defining function
+classify_effort <- function(firstPos, secondPos) {
+  if (firstPos == secondPos) {
+    return("No Change")
+  } else if ((firstPos == "U" && secondPos == "C") || (firstPos == "C" && secondPos == "D")) {
+    return("Less Effort")
+  } else if ((firstPos == "C" && secondPos == "U") || (firstPos == "D" && secondPos == "C")) {
+    return("More Effort")
+  }
+}
+
+##creates and labels halves of trials
+divide_halves <- function(trueTrial) {
+  if (trueTrial <= (max(df$trial_number)/2)) {
+    return("First Half")
+  } else if (trueTrial > (max(df$trial_number)/2)){
+    return("Second Half")
+  }
+}
+
+##Takes out 6-trial participant currently. TO MODIFY --> disinclude anyone with less than 48 original trials.
+grouped_participant_df <- df |> 
+  group_by(participant_id) |> # first line group-by just tells you how you want to clump it together
+  summarize(meanRT = mean(response_time), totalRT = n()) # this is where you tell it what new column you want to see
+
+badParticipant_list <- grouped_participant_df[grouped_participant_df$totalRT < 48, ]$participant_id
+# View(grouped_participant_df)
+
+# calculates outlier range and narrows down grouped_participant_df
+upper_pno <- quantile(grouped_participant_df$meanRT, 0.25) - sd_amount * IQR(grouped_participant_df$meanRT)
+lower_pno <- quantile(grouped_participant_df$meanRT, 0.75) + sd_amount * IQR(grouped_participant_df$meanRT)
+
+grouped_participant_df <- grouped_participant_df |>
+  filter(meanRT < upper_bound) |>
+  filter(meanRT > lower_bound)
+
+# excludes bad participants with less than 48 trials + keeps good participants within outlier range
+goodParticipant_list <- grouped_participant_df$participant_id
+df <- df |>
+  filter(!(participant_id %in% badParticipant_list)) |> 
+  filter(participant_id %in% goodParticipant_list)
+
+
+##exclude outlier trials
+sd_amount <- 1.5
+# "Extreme" outliers use a multiplier of 3.0 instead of 1.5
+lower_bound <- quantile(df$response_time, 0.25) - sd_amount * IQR(df$response_time)
+upper_bound <- quantile(df$response_time, 0.75) + sd_amount * IQR(df$response_time)
+
+df <- df |>
+  filter(response_time < upper_bound) |>
+  filter(response_time > lower_bound)
+
+## mutate (aka add column)
+df <- df |> 
+  mutate(effortCategory = mapply(classify_effort, firstCupPosition, secondCupPosition))
+
+df <- df %>%
+  mutate(handType = ifelse(grepl("Side", firstStim), "Side",
+                    ifelse(grepl("Up", firstStim), "Up", "None")))
+
+##runs various things
+df <-  df |> 
+  mutate(trialHalf = mapply(divide_halves, trial_number))
+
+write.csv(df,"dataframe_answer_effort_malware.csv")
+
+max(df$response_time)
+min(df$response_time)
+         
+```
+
+
+making a plot :D
+```{r}
+df <- read.csv("dataframe_answer_effort_malware.csv", header = TRUE)
+
+class(df)
+grouped_effortCategory <- df %>% 
+  group_by(participant_id, effortCategory, handType, trialHalf) |> # first line group-by just tells you how you want to clump it together
+  summarize(meanRT = mean(response_time), 
+            meanAcc = mean(accuracy),
+            .groups = "drop")
+# View(grouped_effortCategory)
+ggplot(grouped_effortCategory, aes(x = effortCategory, y = meanRT, fill=handType)) +
+  geom_boxplot(fill=c("lightblue", "cornsilk", "lavenderblush2")) +
+  labs(x = "Effort Category",
+       y = "Mean Response Time",
+       title = "Response Time by Effort Category")
+ggplot(grouped_effortCategory, aes(x = effortCategory, y = meanAcc)) +
+  geom_boxplot(fill=c("lightsalmon", "palegreen3", "orchid4")) +
+  labs(x = "Effort Category",
+       y = "Mean Accuracy",
+       title = "Accuracy by Effort Category")
+ggplot(grouped_effortCategory, aes(x = handType, y = meanRT)) +
+  geom_boxplot(fill=c("lightblue", "cornsilk", "lavenderblush2")) +
+  labs(x = "Handedness",
+       y = "Mean Response Time",
+       title = "Response Time by Hand Placement")
+ggplot(grouped_effortCategory, aes(x = handType, y = meanAcc, fill=trialHalf)) +
+  geom_boxplot()+
+  fill=c("lightblue", "cornsilk", "lavenderblush2") +
+  labs(x = "Handedness",
+       y = "Mean Accuracy",
+       title = "Accuracy by Hand Placement")
