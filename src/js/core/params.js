@@ -3,12 +3,14 @@
 Defining Parameter Variables
 ===============================================================
 */
+var currentType = "typeDown" // typeDown for hands positioned at the bottom of the frame, typeSide for hands positioned at the side!
 
-var stimFolder = 'src/assets/stimuli/cabinets/'
+var stimFolder = `src/assets/stimuli/cabinets/`
+var currentStimFolder = `src/assets/stimuli/cabinets/${currentType}/`
 var generalFolder = 'src/assets/stimuli/other/'
 
-var runIntro = true;
-var runInstr = true;
+var runIntro = false;
+var runInstr = false;
 var runExpt = true;
 var runClose = true;
 var runPreload = true;
