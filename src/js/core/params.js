@@ -9,8 +9,8 @@ var stimFolder = `src/assets/stimuli/cabinets/`
 var currentStimFolder = `src/assets/stimuli/cabinets/${currentType}/`
 var generalFolder = 'src/assets/stimuli/other/'
 
-var runIntro = false;
-var runInstr = false;
+var runIntro = true;
+var runInstr = true;
 var runExpt = true;
 var runClose = true;
 var runPreload = true;
