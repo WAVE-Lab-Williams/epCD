@@ -210,7 +210,7 @@ var poss_fullness = ["Half"] //has "Full", "Half", "ExtraFull" or both
 poss_fullness = randomChoice(poss_fullness,1);
 var poss_position_combos = ["CU","CD","UC","DC","CC","CC","UU","DD"]
 var poss_position = ["C", "U", "D"];
-var poss_hand = ["None", "Up", "Side"];
+var poss_hand = ["Fist", "PPR", "Reach"];
 var poss_disp_duration = [300];
 
 var factors = { // each of these needs to be an array
@@ -228,7 +228,7 @@ console.log(full_design[0]);
 for (var i=0; i < poss_fullness.length; i++) {
     for (var j=0; j < poss_position.length; j++){
         for (var k=0; k < poss_hand.length; k++) {
-            forPreload.push(`${stimFolder}cup${poss_fullness[i]}_pos${poss_position[j]}_hand${poss_hand[k]}.png`)
+            forPreload.push(`${currentStimFolder}cup${poss_fullness[i]}_pos${poss_position[j]}_hand${poss_hand[k]}.png`)
         }
     }
 }

@@ -142,7 +142,7 @@ function processTrialData(data) {
             firstCupPosition: data.firstCupPosition,
             secondCupPosition: data.secondCupPosition,
             cupFullness: data.cupFullness,
-            tableType: data.tableType,
+            handType: data.handType,
             y_position: data.y_position,
             dispImage_duration: data.dispImage_duration,
             accuracy: data.thisAcc,
