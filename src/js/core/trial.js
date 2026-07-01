@@ -139,6 +139,7 @@ function runSingleTrial(
             cupFullness: cupFullness,
             handType: handType,
             y_position: random_y_pos,
+            handLocation: currentType,
             trueTrialCounter: trueTrialCounter,
             correct_response: function(){
                 if (firstStim == secondStim){
