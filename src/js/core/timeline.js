@@ -205,20 +205,19 @@ EXPERIMENT SECTION (*sec_expt)
 
 /* -------- defining factors && exptdesign (*factors) --------*/
 
-var poss_location = randomChoice(["typeSide", "typeDown"],1)
+
 var poss_fullness = ["Half"] //has "Full", "Half", "ExtraFull" or both
 poss_fullness = randomChoice(poss_fullness,1);
 var poss_position_combos = ["CU","CD","UC","DC","CC","CC","UU","DD"]
 var poss_position = ["C", "U", "D"];
-var poss_hand = ["Fist", "PPR", "Reach"];
+var poss_hand = randomChoice(["Fist", "PPR", "Reach"],1);
 var poss_disp_duration = [300];
 
 var factors = { // each of these needs to be an array
     fullness: poss_fullness,
     position_combo: poss_position_combos,
     hand_style: poss_hand,
-    disp_duration: poss_disp_duration,
-    hand_location: poss_location
+    disp_duration: poss_disp_duration
 }
 
 var full_design = jsPsych.randomization.factorial(factors, 2); // create combination of every possible condition, and randomly shuffles
