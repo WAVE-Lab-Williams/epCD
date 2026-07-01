@@ -144,6 +144,7 @@ function processTrialData(data) {
             cupFullness: data.cupFullness,
             handType: data.handType,
             y_position: data.y_position,
+            handLocation: data.handLocation,
             dispImage_duration: data.dispImage_duration,
             accuracy: data.thisAcc,
             correct_response: data.correct_response,
