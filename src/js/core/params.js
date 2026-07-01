@@ -3,7 +3,7 @@
 Defining Parameter Variables
 ===============================================================
 */
-var currentType = "typeDown" // typeDown for hands positioned at the bottom of the frame, typeSide for hands positioned at the side!
+var currentType = randomChoice(["typeDown", "typeSide"],1)[0] // typeDown for hands positioned at the bottom of the frame, typeSide for hands positioned at the side!
 
 var stimFolder = `src/assets/stimuli/cabinets/`
 var currentStimFolder = `src/assets/stimuli/cabinets/${currentType}/`

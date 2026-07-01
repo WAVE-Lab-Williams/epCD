@@ -210,7 +210,7 @@ var poss_fullness = ["Half"] //has "Full", "Half", "ExtraFull" or both
 poss_fullness = randomChoice(poss_fullness,1);
 var poss_position_combos = ["CU","CD","UC","DC","CC","CC","UU","DD"]
 var poss_position = ["C", "U", "D"];
-var poss_hand = ["Fist", "PPR", "Reach"];
+var poss_hand = randomChoice(["Fist", "PPR", "Reach"],1);
 var poss_disp_duration = [300];
 
 var factors = { // each of these needs to be an array
